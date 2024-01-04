@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RegisterScreen extends StatelessWidget {
     RegisterScreen({super.key});
 
-  TextEditingController controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

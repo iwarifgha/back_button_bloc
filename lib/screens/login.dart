@@ -1,13 +1,12 @@
 import 'package:bloc_back_button/cubit/auth_cubit.dart';
 import 'package:bloc_back_button/cubit/auth_states.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  TextEditingController controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

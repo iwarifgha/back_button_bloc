@@ -1,7 +1,5 @@
 import 'package:bloc_back_button/cubit/auth_cubit.dart';
 import 'package:bloc_back_button/cubit/auth_state_logic.dart';
-import 'package:bloc_back_button/screens/home.dart';
-import 'package:bloc_back_button/screens/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

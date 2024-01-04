@@ -13,8 +13,8 @@ class AuthCubit extends Cubit<AuthState>{
     if(state is AuthRegisterState) {
       _lastState = const AuthWelcomeState(isLoading: null);
     }
-    else if(state is AuthLoginState) {
-      _lastState = const AuthRegisterState(isLoading: null);
+    if(state is AuthLoginState) {
+       _lastState = const AuthRegisterState(isLoading: null);
     }
   }
 
@@ -28,21 +28,72 @@ class AuthCubit extends Cubit<AuthState>{
     await Future.delayed(const Duration(milliseconds: 1000));
     emit(const AuthLoginState(isLoading: false));
     emit(const AuthCompleteState(isLoading: null));
-    close();
+    close(); //close the block here
   }
 
 
   register() async {
+
+    //before emitting, call onChange.
+    //onChange sees the current state is AuthWelcomeState, nothing happens because we are not handling any case for AuthWelcomeState inside the onChange method.
+    //AuthRegisterState is emitted with isLoading == true.
     emit(const AuthRegisterState(isLoading: true));
+
+    //wait for some seconds
     await Future.delayed(const Duration(milliseconds: 2000));
+
+
+    //try to emit, but first, call onChange.
+    //onChange sees the current state is AuthRegisterState, so _lastState is set to AuthWelcomeState.
+    //AuthRegisterState is emitted with isLoading == false..
+    //If we call goBack at this point we will arrive at the welcome screen because _lastState is set to AuthWelcomeState.
     emit(const AuthRegisterState(isLoading: false));
-    emit(const AuthLoginState(isLoading: null));
+
+
+    //try to emit, but first, call onChange.
+    //onChange sees the current state is AuthRegisterState, so _lastState is set to AuthWelcomeState.
+    //AuthLoginState is emitted with isLoading == true.
+    //If we call goBack at this point we will arrive at the welcome screen.This is because _lastState is still stuck at AuthRegisterState.
+    //to change it we have to try to emit another state which will cause onChange to be called and then _lastState will be updated.
+    emit(const AuthLoginState(isLoading: true));
+
+    //try to emit, but first, call onChange.
+    //onChange sees the current state is AuthLoginState, so _lastState is set to AuthRegisterState.
+    //AuthLoginState is emitted with isLoading == false.
+    //If we call goBack at this point we will arrive at the register screen.
+    emit(const AuthLoginState(isLoading: false));
+
   }
 
   initialize() async {
+
+    //before emitting, call onChange.
+    //onChange sees the current state is AuthWelcomeState, nothing happens because we are not handling any case for
+    //AuthWelcomeState inside the onChange method.
+    // AuthWelcomeState is emitted with isLoading == true.
     emit(const AuthWelcomeState(isLoading: true));
+
+    //wait for some seconds.
     await Future.delayed(const Duration(milliseconds: 2000));
+
+    //before emitting, call onChange.
+    //onChange sees the current state is AuthWelcomeState, nothing happens because we are not handling any case for
+    //AuthWelcomeState inside the onChange method.
+    // AuthWelcomeState is emitted with isLoading == false.
     emit(const AuthWelcomeState(isLoading: false));
-    emit(const AuthRegisterState(isLoading: null));
+
+
+    //before emitting, call onChange.
+    //onChange sees the current state is AuthWelcomeState, nothing happens because we are not handling any case for
+    //AuthWelcomeState inside the onChange method.
+    //AuthRegisterState is emitted with isLoading == true.
+    emit(const AuthRegisterState(isLoading: true));
+
+
+    //before emitting, call onChange.
+    //onChange sees the current state is AuthRegisterState, so _lastState is set to AuthWelcomeState.
+    // AuthRegisterState is emitted with isLoading == false.
+    emit(const AuthRegisterState(isLoading: false));
+
   }
 }
